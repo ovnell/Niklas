@@ -3,6 +3,8 @@ package pixelWindow;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
@@ -21,6 +23,9 @@ public class PixelWindow extends JFrame {
 	private Canvas canvas = new Canvas();
 	private BufferedImage image;
 	private int[] pixels;
+	
+	private int mouseX, mouseY;
+	private boolean[] mouseButtonsPressed = new boolean[20];
 
 	public PixelWindow(int width, int height) {
 		this(width, height, "PixelWindow");
@@ -31,6 +36,8 @@ public class PixelWindow extends JFrame {
 		this.width = width;
 		this.height = height;
 		this.title = title;
+		canvas.addMouseMotionListener(new MousePosition());
+		canvas.addMouseListener(new ButtonListener());
 		fixFrame();
 	}
 
@@ -100,5 +107,55 @@ public class PixelWindow extends JFrame {
 	@Override
 	public void addMouseListener(MouseListener e) {
 		canvas.addMouseListener(e);
+	}
+	
+	public void addKeyListener(KeyListener e) {
+		super.addKeyListener(e);
+		canvas.addKeyListener(e);
+	}
+	
+	public int getMouseX() {
+		return mouseX;
+	}
+	
+	public int getMouseY() {
+		return mouseY;
+	}
+	
+	public boolean mouseButtonPressed(int button) {
+		return mouseButtonsPressed[button];
+	}
+	
+	private class ButtonListener implements MouseListener {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+		@Override
+		public void mousePressed(MouseEvent e) {
+			mouseButtonsPressed[e.getButton()] = true;
+		}
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			mouseButtonsPressed[e.getButton()] = false;
+		}
+	}
+	
+	private class MousePosition implements MouseMotionListener {
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			mouseX = e.getX();
+			mouseY = e.getY();
+		}
 	}
 }
