@@ -9,12 +9,12 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
-public class PixelWindow {
+public class PixelWindow extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private int width, height;
 	private String title;
 
-	private JFrame frame;
 	private Canvas canvas = new Canvas();
 	private BufferedImage image;
 	private int[] pixels;
@@ -24,6 +24,7 @@ public class PixelWindow {
 	}
 
 	public PixelWindow(int width, int height, String title) {
+		super();
 		this.width = width;
 		this.height = height;
 		this.title = title;
@@ -35,14 +36,13 @@ public class PixelWindow {
 		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 		canvas.setPreferredSize(new Dimension(width, height));
 
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setTitle(title);
-		frame.add(canvas);
-		frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		setResizable(false);
+		setTitle(title);
+		add(canvas);
+		pack();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setVisible(true);
 		canvas.createBufferStrategy(3);
 	}
 
@@ -71,21 +71,14 @@ public class PixelWindow {
 		g.dispose();
 		bs.show();
 	}
-
+	
+	@Override
 	public int getWidth() {
 		return width;
 	}
-
+	
+	@Override
 	public int getHeight() {
 		return height;
-	}
-	
-	public String getTitle() {
-		return title;
-	}
-	
-	public void setTitle(String title) {
-		this.title = title;
-		frame.setTitle(title);
 	}
 }
