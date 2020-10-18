@@ -7,20 +7,18 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
-public class PixelWindow extends JFrame {
+public class PixelWindow extends Canvas {
 
 	private static final long serialVersionUID = 1L;
 	private int width, height;
-	private String title;
 
-	private Canvas canvas = new Canvas();
+	private JFrame frame = new JFrame();
 	private BufferedImage image;
 	private int[] pixels;
 	
@@ -35,25 +33,24 @@ public class PixelWindow extends JFrame {
 		super();
 		this.width = width;
 		this.height = height;
-		this.title = title;
-		canvas.addMouseMotionListener(new MousePosition());
-		canvas.addMouseListener(new ButtonListener());
-		fixFrame();
+		addMouseMotionListener(new MousePosition());
+		addMouseListener(new ButtonListener());
+		fixFrame(title);
 	}
 
-	private void fixFrame() {
+	private void fixFrame(String title) {
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-		canvas.setPreferredSize(new Dimension(width, height));
+		setPreferredSize(new Dimension(width, height));
 
-		setResizable(false);
-		setTitle(title);
-		add(canvas);
-		pack();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		setVisible(true);
-		canvas.createBufferStrategy(3);
+		frame.setResizable(false);
+		frame.setTitle(title);
+		frame.add(this);
+		frame.pack();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		createBufferStrategy(3);
 	}
 
 	/**
@@ -77,7 +74,7 @@ public class PixelWindow extends JFrame {
 	 * Renders the image, showing all the pixels in the frame.
 	 */
 	public void render() {
-		BufferStrategy bs = canvas.getBufferStrategy();
+		BufferStrategy bs = getBufferStrategy();
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, null);
 		g.dispose();
@@ -93,25 +90,10 @@ public class PixelWindow extends JFrame {
 	public int getHeight() {
 		return height;
 	}
-
-	@Override
-	public void addMouseWheelListener(MouseWheelListener e) {
-		canvas.addMouseWheelListener(e);
-	}
-
-	@Override
-	public void addMouseMotionListener(MouseMotionListener e) {
-		canvas.addMouseMotionListener(e);
-	}
-
-	@Override
-	public void addMouseListener(MouseListener e) {
-		canvas.addMouseListener(e);
-	}
 	
 	public void addKeyListener(KeyListener e) {
 		super.addKeyListener(e);
-		canvas.addKeyListener(e);
+		frame.addKeyListener(e);
 	}
 	
 	public int getMouseX() {
@@ -124,6 +106,14 @@ public class PixelWindow extends JFrame {
 	
 	public boolean mouseButtonPressed(int button) {
 		return mouseButtonsPressed[button];
+	}
+	
+	public void setTitle(String title) {
+		frame.setTitle(title);
+	}
+	
+	public String getTitle() {
+		return frame.getTitle();
 	}
 	
 	private class ButtonListener implements MouseListener {
