@@ -21,7 +21,7 @@ public class PixelWindow extends Canvas {
 	private JFrame frame = new JFrame();
 	private BufferedImage image;
 	private int[] pixels;
-	
+
 	private int mouseX, mouseY;
 	private boolean[] mouseButtonsPressed = new boolean[20];
 
@@ -64,10 +64,6 @@ public class PixelWindow extends Canvas {
 	 */
 	public void setPixel(int x, int y, int color) {
 		pixels[x + y * width] = color;
-		if (x + y * width > pixels.length) {
-			System.out.printf("x = %d, y = %d, pixel = %d\n", x, y, x + y * width);
-			System.out.println(pixels.length);
-		}
 	}
 
 	/**
@@ -90,52 +86,56 @@ public class PixelWindow extends Canvas {
 	public int getHeight() {
 		return height;
 	}
-	
+
 	public void addKeyListener(KeyListener e) {
 		super.addKeyListener(e);
 		frame.addKeyListener(e);
 	}
-	
+
 	public int getMouseX() {
 		return mouseX;
 	}
-	
+
 	public int getMouseY() {
 		return mouseY;
 	}
-	
+
 	public boolean mouseButtonPressed(int button) {
 		return mouseButtonsPressed[button];
 	}
-	
+
 	public void setTitle(String title) {
 		frame.setTitle(title);
 	}
-	
+
 	public String getTitle() {
 		return frame.getTitle();
 	}
-	
+
 	private class ButtonListener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 		}
+
 		@Override
 		public void mouseEntered(MouseEvent e) {
 		}
+
 		@Override
 		public void mouseExited(MouseEvent e) {
 		}
+
 		@Override
 		public void mousePressed(MouseEvent e) {
 			mouseButtonsPressed[e.getButton()] = true;
 		}
+
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			mouseButtonsPressed[e.getButton()] = false;
 		}
 	}
-	
+
 	private class MousePosition implements MouseMotionListener {
 
 		@Override
