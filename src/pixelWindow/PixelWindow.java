@@ -14,6 +14,10 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
 public class PixelWindow extends Canvas {
+	
+	public static int getColorCode(int r, int g, int b) {
+		return (r << 16) + (g << 8) + b;
+	}
 
 	private static final long serialVersionUID = 1L;
 	private int width, height;
