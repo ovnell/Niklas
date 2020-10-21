@@ -80,6 +80,10 @@ public class PixelWindow extends Canvas {
 		g.dispose();
 		bs.show();
 	}
+	
+	public void close() {
+		frame.dispose();
+	}
 
 	@Override
 	public int getWidth() {
